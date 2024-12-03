@@ -1,0 +1,52 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '57 5 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          extensions: mbstring, json
+
+      - name: Validate composer.json
+        run: composer validate
+
+      - name: Lint PHP
+        run: |
+          find src/ tests/ -name '*.php' -print0 | xargs -0 -n1 -P4 php -dxdebug.mode=off -l >/dev/null
+
+      - name: Install dependencies
+        run: COMPOSER_ROOT_VERSION=dev-main composer update
+
+      - name: CGL check
+        if: ${{ matrix.php <= '8.3' }}
+        run: vendor/bin/php-cs-fixer fix -v --diff --dry-run --show-progress none
+
+      - name: Phpstan
+        if: ${{ matrix.php <= '8.3' }}
+        run: vendor/bin/phpstan analyze --no-progress
+
+      - name: Phpunit
+        run: vendor/bin/phpunit
+
+      - name: Documentation integrity
+        run: |
+          FLUID_DOCUMENTATION_OUTPUT_DIR=Documentation/ViewHelpers vendor/bin/fluidDocumentation generate vendor/t3docs/fluid-documentation-generator/config/fluidStandalone/*
+          git add Documentation/*; git status; git status | grep -q "nothing to commit, working tree clean"

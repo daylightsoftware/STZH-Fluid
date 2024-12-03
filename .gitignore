@@ -1,0 +1,6 @@
+.ddev
+.idea
+build
+composer.lock
+vendor
+/Documentation-GENERATED-temp/
