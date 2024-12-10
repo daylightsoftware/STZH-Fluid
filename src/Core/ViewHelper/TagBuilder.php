@@ -303,21 +303,22 @@ class TagBuilder
     // STZH - Templates 3.5.0 - https://designsystem.stadt-zuerich.ch/current
     private function replaceTags() : void
     {
-        $tag = $this->tagName;
-        if ($this->tagName == 'button' || ($this->attributes['type'] ?? '') == 'submit'){
-            $tag = 'stzh-button';
-        } else if ($this->tagName == 'input'){
-            if (preg_match('/\s*textfield\*\s*/',$this->attributes['class'] ?? '') === 1) {
+        if (preg_match('/\*newStyle\*/',$this->attributes['class'] ?? '') === 1) {
+            $tag = $this->tagName;
+            if ($this->tagName == 'button' || ($this->attributes['type'] ?? '') == 'submit') {
+                $tag = 'stzh-button';
+            } else if ($this->tagName == 'input') {
+                if (preg_match('/\s*textfield\*\s*/', $this->attributes['class'] ?? '') === 1) {
+                    $tag = 'stzh-input';
+                } else if (preg_match('/\s*checkbox\*\s*/', $this->attributes['class'] ?? '') === 1) {
+                    $tag = 'stzh-checkbox';
+                }
+            } else if ($this->tagName == 'select') {
+                $tag = 'stzh-dropdown';
+            } else if ($this->tagName == 'textarea') {
                 $tag = 'stzh-input';
-            } else if (preg_match('/\s*checkbox\*\s*/',$this->attributes['class'] ?? '') === 1) {
-                $tag = 'stzh-checkbox';
             }
-        } else if ($this->tagName == 'select'){
-            $tag = 'stzh-dropdown';
-        } else if ($this->tagName == 'textarea'){
-            $tag = 'stzh-input';
+            $this->tagName = $tag;
         }
-        $this->tagName = $tag;
     }
-
 }
