@@ -142,6 +142,9 @@ class ArgumentDefinition
         return $this->getType() === 'bool' || $this->getType() === 'boolean';
     }
 
+    /**
+     * @return string[]
+     */
     public function getUnionTypes(): array
     {
         return array_map('trim', explode('|', $this->type));
