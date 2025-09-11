@@ -311,6 +311,8 @@ class TagBuilder
                 $tag = 'stzh-input';
             } else if (preg_match('/\s*checkbox\*\s*/', $this->attributes['class'] ?? '') === 1) {
                 $tag = 'stzh-checkbox';
+            } else if (preg_match('/\s*datepicker\*\s*/', $this->attributes['class'] ?? '') === 1) {
+                $tag = 'stzh-datepicker';
             }
         } else if ($this->tagName == 'select') {
             $tag = 'stzh-dropdown';
