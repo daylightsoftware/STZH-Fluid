@@ -307,11 +307,11 @@ class TagBuilder
         if ($this->tagName == 'button' || ($this->attributes['type'] ?? '') == 'submit') {
             $tag = 'stzh-button';
         } else if ($this->tagName == 'input') {
-            if (preg_match('/\s*textfield\*\s*/', $this->attributes['class'] ?? '') === 1) {
+            if (preg_match('/\s*stzh-textfield\s*/', $this->attributes['class'] ?? '') === 1) {
                 $tag = 'stzh-input';
-            } else if (preg_match('/\s*checkbox\*\s*/', $this->attributes['class'] ?? '') === 1) {
+            } else if (preg_match('/\s*stzh-checkbox\s*/', $this->attributes['class'] ?? '') === 1) {
                 $tag = 'stzh-checkbox';
-            } else if (preg_match('/\s*datepicker\*\s*/', $this->attributes['class'] ?? '') === 1) {
+            } else if (preg_match('/\s*stzh-datepicker\s*/', $this->attributes['class'] ?? '') === 1) {
                 $tag = 'stzh-datepicker';
             }
         } else if ($this->tagName == 'select') {
