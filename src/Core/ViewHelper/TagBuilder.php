@@ -304,7 +304,8 @@ class TagBuilder
     private function replaceTags() : void
     {
         $tag = $this->tagName;
-        if ($this->tagName == 'button' || ($this->attributes['type'] ?? '') == 'submit') {
+        if (($this->tagName == 'button' || ($this->attributes['type'] ?? '') == 'submit') &&
+            preg_match('/\s*stzh-button\s*/', $this->attributes['class'] ?? '') === 1) {
             $tag = 'stzh-button';
         } else if ($this->tagName == 'input') {
             if (preg_match('/\s*stzh-textfield\s*/', $this->attributes['class'] ?? '') === 1) {
@@ -316,9 +317,9 @@ class TagBuilder
             } else if (preg_match('/\s*stzh-radio\s*/', $this->attributes['class'] ?? '') === 1) {
                 $tag = 'stzh-radio';
             }
-        } else if ($this->tagName == 'select') {
+        } else if ($this->tagName == 'select' && preg_match('/\s*stzh-select\s*/', $this->attributes['class'] ?? '') === 1) {
             $tag = 'stzh-dropdown';
-        } else if ($this->tagName == 'textarea') {
+        } else if ($this->tagName == 'textarea' && preg_match('/\s*stzh-textarea\s*/', $this->attributes['class'] ?? '') === 1) {
             $tag = 'stzh-input';
         }
         $this->tagName = $tag;
