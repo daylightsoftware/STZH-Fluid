@@ -316,6 +316,8 @@ class TagBuilder
                 $tag = 'stzh-datepicker';
             } else if (preg_match('/\s*stzh-radio\s*/', $this->attributes['class'] ?? '') === 1) {
                 $tag = 'stzh-radio';
+            } else if (preg_match('/\s*stzh-upload\s*/', $this->attributes['class'] ?? '') === 1) {
+                $tag = 'stzh-upload';
             }
         } else if ($this->tagName == 'select' && preg_match('/\s*stzh-select\s*/', $this->attributes['class'] ?? '') === 1) {
             $tag = 'stzh-dropdown';
