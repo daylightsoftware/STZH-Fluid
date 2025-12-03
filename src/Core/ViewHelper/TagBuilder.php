@@ -284,6 +284,8 @@ class TagBuilder
      */
     public function render(): string
     {
+        // STZH method to replace tags
+        $this->replaceTags();
         if (empty($this->tagName)) {
             return '';
         }
@@ -297,5 +299,31 @@ class TagBuilder
             $output .= ' />';
         }
         return $output;
+    }
+
+    // STZH - https://designsystem.stadt-zuerich.ch/current
+    private function replaceTags() : void
+    {
+        $tag = $this->tagName;
+        if ($this->tagName == 'button' || ($this->attributes['type'] ?? '') == 'submit') {
+            $tag = 'stzh-button';
+        } else if ($this->tagName == 'input') {
+            if (preg_match('/\s*stzh-textfield\s*/', $this->attributes['class'] ?? '') === 1) {
+                $tag = 'stzh-input';
+            } else if (preg_match('/\s*stzh-checkbox\s*/', $this->attributes['class'] ?? '') === 1) {
+                $tag = 'stzh-checkbox';
+            } else if (preg_match('/\s*stzh-datepicker\s*/', $this->attributes['class'] ?? '') === 1) {
+                $tag = 'stzh-datepicker';
+            } else if (preg_match('/\s*stzh-radio\s*/', $this->attributes['class'] ?? '') === 1) {
+                $tag = 'stzh-radio';
+            } else if (preg_match('/\s*stzh-upload\s*/', $this->attributes['class'] ?? '') === 1) {
+                $tag = 'stzh-upload';
+            }
+        } else if ($this->tagName == 'select') {
+            $tag = 'stzh-dropdown';
+        } else if ($this->tagName == 'textarea') {
+            $tag = 'stzh-input';
+        }
+        $this->tagName = $tag;
     }
 }
